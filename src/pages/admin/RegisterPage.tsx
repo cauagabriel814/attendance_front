@@ -1,16 +1,17 @@
 import { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { companyApi } from '../../api/auth';
+import { validateCnpj } from '../../utils/cnpj';
 
 const schema = z.object({
   email: z.string().email('E-mail inválido'),
   ownerName: z.string().min(2, 'Nome é obrigatório'),
   cnpj: z
     .string()
-    .regex(/^\d{2}\.?\d{3}\.?\d{3}\/?\d{4}-?\d{2}$/, 'CNPJ inválido'),
+    .refine(validateCnpj, 'CNPJ inválido'),
   ownerBirthDate: z.string().min(1, 'Data de nascimento é obrigatória'),
   allowOvertime: z.boolean(),
   maxOvertimeHours: z.number().min(0.5).max(4).optional(),
@@ -25,7 +26,6 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>;
 
 export default function AdminRegisterPage() {
-  const navigate = useNavigate();
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
 
@@ -90,8 +90,9 @@ export default function AdminRegisterPage() {
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4" noValidate>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="sm:col-span-2">
-              <label className="block text-sm font-medium text-gray-700 mb-1">E-mail</label>
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">E-mail</label>
               <input
+                id="email"
                 type="email"
                 className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 {...register('email')}
@@ -100,8 +101,9 @@ export default function AdminRegisterPage() {
             </div>
 
             <div className="sm:col-span-2">
-              <label className="block text-sm font-medium text-gray-700 mb-1">Nome do responsável</label>
+              <label htmlFor="ownerName" className="block text-sm font-medium text-gray-700 mb-1">Nome do responsável</label>
               <input
+                id="ownerName"
                 type="text"
                 className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 {...register('ownerName')}
@@ -110,8 +112,9 @@ export default function AdminRegisterPage() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">CNPJ</label>
+              <label htmlFor="cnpj" className="block text-sm font-medium text-gray-700 mb-1">CNPJ</label>
               <input
+                id="cnpj"
                 type="text"
                 placeholder="00.000.000/0000-00"
                 className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -121,8 +124,9 @@ export default function AdminRegisterPage() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Data de nascimento do responsável</label>
+              <label htmlFor="ownerBirthDate" className="block text-sm font-medium text-gray-700 mb-1">Data de nascimento do responsável</label>
               <input
+                id="ownerBirthDate"
                 type="date"
                 className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 {...register('ownerBirthDate')}
@@ -131,8 +135,9 @@ export default function AdminRegisterPage() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Máx. de funcionários</label>
+              <label htmlFor="maxEmployees" className="block text-sm font-medium text-gray-700 mb-1">Máx. de funcionários</label>
               <input
+                id="maxEmployees"
                 type="number"
                 min={1}
                 className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -155,8 +160,9 @@ export default function AdminRegisterPage() {
 
             {allowOvertime && (
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Máx. horas extras/dia</label>
+                <label htmlFor="maxOvertimeHours" className="block text-sm font-medium text-gray-700 mb-1">Máx. horas extras/dia</label>
                 <input
+                  id="maxOvertimeHours"
                   type="number"
                   step="0.5"
                   min="0.5"
@@ -168,8 +174,9 @@ export default function AdminRegisterPage() {
             )}
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Senha</label>
+              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">Senha</label>
               <input
+                id="password"
                 type="password"
                 className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 {...register('password')}
@@ -178,8 +185,9 @@ export default function AdminRegisterPage() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Confirmar senha</label>
+              <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-1">Confirmar senha</label>
               <input
+                id="confirmPassword"
                 type="password"
                 className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 {...register('confirmPassword')}

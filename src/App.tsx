@@ -8,6 +8,7 @@ import EmployeeLoginPage from './pages/employee/LoginPage';
 import EmployeeVerifyEmailPage from './pages/employee/VerifyEmailPage';
 import AdminLoginPage from './pages/admin/LoginPage';
 import AdminRegisterPage from './pages/admin/RegisterPage';
+import CompanyVerifyEmailPage from './pages/admin/VerifyEmailPage';
 
 // Páginas do funcionário (protegidas)
 import PontoPage from './pages/employee/PontoPage';
@@ -48,7 +49,7 @@ export default function App() {
             {/* Portal admin — públicas */}
             <Route path="/admin/login" element={<AdminLoginPage />} />
             <Route path="/admin/cadastro" element={<AdminRegisterPage />} />
-            <Route path="/empresa/verificar-email" element={<EmployeeVerifyEmailPage />} />
+            <Route path="/empresa/verificar-email" element={<CompanyVerifyEmailPage />} />
 
             {/* Portal admin — protegidas */}
             <Route element={<ProtectedRoute allowedType="company" redirectTo="/admin/login" />}>

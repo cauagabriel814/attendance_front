@@ -25,7 +25,10 @@ api.interceptors.response.use(
   async (error: AxiosError) => {
     const original = error.config as typeof error.config & { _retry?: boolean };
 
-    if (error.response?.status === 401 && !original?._retry) {
+    // Endpoints de login não devem acionar o fluxo de refresh — propaga o erro direto
+    const isLoginEndpoint = original?.url?.includes('/login');
+
+    if (error.response?.status === 401 && !original?._retry && !isLoginEndpoint) {
       const refreshToken = localStorage.getItem('refreshToken');
       const userType = localStorage.getItem('userType'); // 'company' | 'employee'
 

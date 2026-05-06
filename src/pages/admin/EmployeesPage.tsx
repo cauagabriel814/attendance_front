@@ -173,7 +173,7 @@ export default function EmployeesPage() {
                 { id: 'password', label: 'Senha temporária', type: 'password' },
               ].map(({ id, label, type, placeholder }) => (
                 <div key={id}>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
+                  <label htmlFor={id} className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
                   <input
                     id={id}
                     type={type}
@@ -190,8 +190,9 @@ export default function EmployeesPage() {
               ))}
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Cargo</label>
+                <label htmlFor="roleId" className="block text-sm font-medium text-gray-700 mb-1">Cargo</label>
                 <select
+                  id="roleId"
                   className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                   {...register('roleId')}
                 >
@@ -205,13 +206,13 @@ export default function EmployeesPage() {
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Horário de entrada</label>
-                  <input type="time" className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" {...register('entryTime')} />
+                  <label htmlFor="entryTime" className="block text-sm font-medium text-gray-700 mb-1">Horário de entrada</label>
+                  <input id="entryTime" type="time" className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" {...register('entryTime')} />
                   {errors.entryTime && <p className="text-red-500 text-xs mt-1">{errors.entryTime.message}</p>}
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Horário de saída</label>
-                  <input type="time" className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" {...register('exitTime')} />
+                  <label htmlFor="exitTime" className="block text-sm font-medium text-gray-700 mb-1">Horário de saída</label>
+                  <input id="exitTime" type="time" className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" {...register('exitTime')} />
                   {errors.exitTime && <p className="text-red-500 text-xs mt-1">{errors.exitTime.message}</p>}
                 </div>
               </div>
