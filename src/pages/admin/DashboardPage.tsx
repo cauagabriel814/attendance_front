@@ -103,9 +103,9 @@ export default function DashboardPage() {
 
       {/* Gráficos */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Gráfico de barras: presença diária */}
-        <Section title="Presença diária">
-          <div className="lg:col-span-2">
+        {/* Gráfico de barras: presença diária — ocupa 2/3 */}
+        <div className="lg:col-span-2">
+          <Section title="Presença diária">
             <ResponsiveContainer width="100%" height={220}>
               <BarChart data={trendData} margin={{ top: 0, right: 0, bottom: 0, left: -20 }}>
                 <XAxis dataKey="dateLabel" tick={{ fontSize: 11 }} />
@@ -117,31 +117,33 @@ export default function DashboardPage() {
                 <Bar dataKey="late" name="Atrasados" fill="#f59e0b" radius={[4, 4, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
-          </div>
-        </Section>
+          </Section>
+        </div>
 
-        {/* Gráfico de pizza: distribuição do dia */}
+        {/* Gráfico de pizza: distribuição do dia — ocupa 1/3 */}
         <Section title="Distribuição hoje">
-          <ResponsiveContainer width="100%" height={220}>
+          <ResponsiveContainer width="100%" height={200}>
             <PieChart>
               <Pie
                 data={pieData}
                 cx="50%"
                 cy="50%"
-                innerRadius={55}
-                outerRadius={85}
+                innerRadius={50}
+                outerRadius={75}
                 paddingAngle={3}
                 dataKey="value"
-                label={({ name, percent }: { name?: string; percent?: number }) =>
-                  `${name ?? ''}: ${((percent ?? 0) * 100).toFixed(0)}%`
-                }
-                labelLine={false}
               >
                 {pieData.map((_, index) => (
                   <Cell key={index} fill={PIE_COLORS[index % PIE_COLORS.length]} />
                 ))}
               </Pie>
               <Tooltip />
+              <Legend
+                iconSize={10}
+                iconType="circle"
+                wrapperStyle={{ fontSize: 12 }}
+                formatter={(value) => value}
+              />
             </PieChart>
           </ResponsiveContainer>
         </Section>
