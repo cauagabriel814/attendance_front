@@ -1,73 +1,80 @@
-# React + TypeScript + Vite
+# Controle de Ponto — Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Interface web para o sistema de controle de ponto eletrônico, com portal do funcionário e portal administrativo.
 
-Currently, two official plugins are available:
+## Tecnologias
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **React 19** + TypeScript + Vite 8
+- **Tailwind CSS v4**
+- **React Router v7** com rotas protegidas por tipo de usuário
+- **TanStack Query v5** para gerenciamento de estado do servidor
+- **Axios** com interceptor de refresh token automático
+- **React Hook Form** + **Zod** para validação de formulários
+- **Recharts** para gráficos do dashboard
+- **Vitest** + **Testing Library** + **MSW** para testes
+- **Playwright** para testes E2E
+- **Nginx** para servir em produção
 
-## React Compiler
+## Funcionalidades
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Portal do Funcionário
+- Login com e-mail e senha
+- Verificação de e-mail
+- Tela de ponto: check-in / check-out com status em tempo real
+- Histórico de registros paginado
 
-## Expanding the ESLint configuration
+### Portal Administrativo
+- Cadastro e login da empresa
+- Gestão de funcionários (cadastrar, desativar)
+- Gestão de cargos e permissões
+- Dashboard com métricas: presença, pontualidade, horas extras, rankings e tendência diária
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Pré-requisitos
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- Node.js 20+
+- Backend rodando (ver repositório `attendance_back`)
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## Configuração local
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+# 1. Instale as dependências
+npm install
+
+# 2. Configure a URL da API
+echo "VITE_API_URL=http://localhost:3000/api/v1" > .env
+
+# 3. Inicie o servidor de desenvolvimento
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Acesse em `http://localhost:5173`
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Testes
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+# Unitários
+npm test
+
+# Com cobertura
+npm run test:coverage
+
+# E2E (requer app rodando)
+npm run test:e2e
+```
+
+7 testes unitários passando
+
+## Build de produção
+
+```bash
+npm run build
+```
+
+## Deploy (EasyPanel)
+
+O repositório contém o `Dockerfile` com build multi-stage (Node → Nginx).
+Configure o build arg no EasyPanel:
+
+```
+VITE_API_URL=https://seu-dominio-da-api/api/v1
 ```
