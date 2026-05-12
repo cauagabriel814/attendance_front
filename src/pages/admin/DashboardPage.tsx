@@ -53,7 +53,7 @@ export default function DashboardPage() {
     );
   }
 
-  const { summary, rankings, overtimeByEmployee, dailyTrend } = data;
+  const { summary, rankings, overtimeByEmployee, complianceReport, dailyTrend } = data;
 
   // Dados para o gráfico de pizza
   const pieData = [
@@ -215,6 +215,43 @@ export default function DashboardPage() {
                 <tr key={emp.employeeId}>
                   <td className="py-2 font-medium text-gray-800">{emp.name}</td>
                   <td className="py-2 text-right text-orange-600">{emp.overtimeHours}h</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </Section>
+      )}
+
+      {/* Conformidade de Jornada */}
+      {complianceReport.employees.length > 0 && (
+        <Section title="Conformidade de Jornada">
+          {complianceReport.maxOvertimeHours !== null && (
+            <p className="text-xs text-gray-500 mb-3">
+              Limite da empresa:{' '}
+              <span className="font-semibold">{complianceReport.maxOvertimeHours}h</span>{' '}
+              de hora extra no período
+            </p>
+          )}
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="text-xs text-gray-400">
+                <th className="text-left pb-2">Funcionário</th>
+                <th className="text-right pb-2">Horas extras</th>
+                <th className="text-right pb-2">Situação</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-50">
+              {complianceReport.employees.map((emp) => (
+                <tr key={emp.employeeId}>
+                  <td className="py-2 font-medium text-gray-800">{emp.name}</td>
+                  <td className="py-2 text-right text-orange-600">{emp.overtimeHours}h</td>
+                  <td className="py-2 text-right">
+                    {emp.exceeded ? (
+                      <span className="text-red-600 font-medium">Limite excedido</span>
+                    ) : (
+                      <span className="text-green-600">Dentro do limite</span>
+                    )}
+                  </td>
                 </tr>
               ))}
             </tbody>

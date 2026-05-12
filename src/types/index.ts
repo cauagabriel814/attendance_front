@@ -67,6 +67,12 @@ export interface PaginatedResponse<T> {
   };
 }
 
+export interface MonthlySummary {
+  workedHours: number;
+  scheduledHours: number;
+  workedDays: number;
+}
+
 // ─── Roles ────────────────────────────────────────────────────────────────────
 
 export interface Role {
@@ -133,6 +139,18 @@ export interface DailyTrendEntry {
   overtime: number;
 }
 
+export interface ComplianceEmployee {
+  employeeId: string;
+  name: string;
+  overtimeHours: number;
+  exceeded: boolean;
+}
+
+export interface ComplianceReport {
+  maxOvertimeHours: number | null;
+  employees: ComplianceEmployee[];
+}
+
 export interface DashboardData {
   period: 'today' | 'week' | 'month';
   periodStart: string;
@@ -143,5 +161,6 @@ export interface DashboardData {
     mostLate: RankingEntry[];
   };
   overtimeByEmployee: OvertimeEntry[];
+  complianceReport: ComplianceReport;
   dailyTrend: DailyTrendEntry[];
 }

@@ -7,6 +7,11 @@ COPY package*.json ./
 RUN npm ci
 
 COPY . .
+
+# Recebe a URL da API em tempo de build (Vite bake a variável no bundle)
+ARG VITE_API_URL=http://localhost:3000/api/v1
+ENV VITE_API_URL=$VITE_API_URL
+
 RUN npm run build
 
 # ─── Produção (Nginx) ─────────────────────────────────────────────────────────

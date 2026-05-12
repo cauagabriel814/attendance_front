@@ -23,6 +23,12 @@ export default function PontoPage() {
     refetchInterval: 30_000, // atualiza a cada 30s
   });
 
+  const { data: summary } = useQuery({
+    queryKey: ['monthly-summary'],
+    queryFn: () => attendanceApi.monthlySummary().then((r) => r.data),
+    staleTime: 5 * 60_000,
+  });
+
   const checkIn = useMutation({
     mutationFn: () => attendanceApi.checkIn(),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['today-status'] }),
@@ -132,6 +138,27 @@ export default function PontoPage() {
             </button>
           </div>
         </div>
+
+        {/* Resumo do mês */}
+        {summary && (
+          <div className="bg-white rounded-2xl shadow-sm p-6">
+            <h2 className="text-sm font-semibold text-gray-700 mb-4">Resumo do mês</h2>
+            <div className="grid grid-cols-3 gap-4 text-center">
+              <div>
+                <p className="text-2xl font-bold text-blue-600">{summary.workedDays}</p>
+                <p className="text-xs text-gray-500 mt-1">Dias trabalhados</p>
+              </div>
+              <div>
+                <p className="text-2xl font-bold text-green-600">{summary.workedHours}h</p>
+                <p className="text-xs text-gray-500 mt-1">Horas trabalhadas</p>
+              </div>
+              <div>
+                <p className="text-2xl font-bold text-gray-700">{summary.scheduledHours}h</p>
+                <p className="text-xs text-gray-500 mt-1">Horas previstas</p>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Erros */}
         {checkIn.isError && (

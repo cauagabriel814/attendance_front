@@ -1,5 +1,5 @@
 import { api } from './client';
-import type { TodayStatus, AttendanceRecord, PaginatedResponse } from '../types';
+import type { TodayStatus, AttendanceRecord, PaginatedResponse, MonthlySummary } from '../types';
 
 export const attendanceApi = {
   todayStatus: () => api.get<TodayStatus>('/attendance/today'),
@@ -12,4 +12,6 @@ export const attendanceApi = {
     api.get<PaginatedResponse<AttendanceRecord>>('/attendance/my-history', {
       params: { page, limit },
     }),
+
+  monthlySummary: () => api.get<MonthlySummary>('/attendance/monthly-summary'),
 };
